@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.andrey.listavip.models.Convidado;
-import br.com.andrey.listavip.repositories.ConvidadoRepository;
+import br.com.andrey.listavip.services.ConvidadoService;
 
 @Controller
 @RequestMapping("/")
 public class ConvidadoController {
 	
 	@Autowired
-	private ConvidadoRepository cr;
+	private ConvidadoService convidadoService;
 	
 	@GetMapping
 	public String index() {
@@ -25,7 +25,7 @@ public class ConvidadoController {
 	
 	@GetMapping("lista")
 	public String lista(Model model) {
-		model.addAttribute("convidados", cr.findAll());
+		model.addAttribute("convidados", convidadoService.lista());
 		return "lista";
 	}
 	
@@ -36,8 +36,8 @@ public class ConvidadoController {
 					     Model model) {
 		
 		Convidado conv = new Convidado(nome, email, telefone);
-		cr.save(conv);
-		model.addAttribute("convidados", cr.findAll());
+		convidadoService.salvar(conv);
+		model.addAttribute("convidados", convidadoService.lista());
 		return "lista";
 	}
 }
